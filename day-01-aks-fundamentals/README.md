@@ -1,4 +1,19 @@
 # Day 1 — AKS Cluster Fundamentals
+
+## Objective
+
+Understand the core building blocks of Azure Kubernetes Service (AKS) and deploy a first workload.
+
+By the end of Day 1:
+
+- Understand AKS architecture basics
+- Create an AKS cluster
+- Deploy a sample application
+- Expose it using a Service
+- Observe Kubernetes self-healing
+
+---
+
 ## Repository Structure
 
 ```text
@@ -8,50 +23,85 @@ day-01-aks-fundamentals/
 ├── service.yaml
 ├── notes.md
 └── diagrams/
-    └── aks-basic-architecture.png
 ```
 
-## Objective
-Understand core AKS building blocks and deploy a first workload.
-
-By the end of Day 1:
-
-- Understand AKS architecture
-- Create an AKS cluster
-- Deploy a sample application
-- Expose it using a Service
-- Observe Kubernetes self-healing
-
 ---
 
-# What is AKS?
+## What is AKS?
 
-Azure Kubernetes Service (AKS) is a managed Kubernetes service.
+Azure Kubernetes Service (AKS) is a managed Kubernetes service on Azure.
 
 Azure manages:
-- Control Plane
-- API Server
-- Scheduler
-- etcd
+
+- Control Plane  
+- API Server  
+- Scheduler  
+- etcd  
 
 You manage:
-- Node Pools
-- Containers
-- Applications
+
+- Node Pools  
+- Containers  
+- Applications  
+- Kubernetes configurations
 
 ---
 
-# Basic Architecture
+## Basic Architecture
 
-Users  
-↓  
-Service / External IP  
-↓  
-AKS Cluster  
-↓  
-Pods running on worker nodes
+```text
+                 Users
+                   |
+             External IP
+                   |
+          Kubernetes Service
+                   |
+               AKS Cluster
+        -------------------------
+        |                       |
+      Node 1                  Node 2
+        |                       |
+      Pod A                   Pod B
+```
 
-(See architecture diagram in diagrams folder)
+(Architecture diagram to be added in diagrams folder)
+
+---
+
+## Core Concepts
+
+### Control Plane
+The brain of Kubernetes.
+
+Responsible for:
+- Scheduling
+- Cluster state
+- API management
+
+Managed by Azure in AKS.
+
+---
+
+### Node Pool
+Group of worker nodes where workloads run.
+
+---
+
+### Pod
+Smallest deployable unit in Kubernetes.
+
+---
+
+### Deployment
+Manages:
+- Replicas
+- Rolling updates
+- Self-healing
+
+---
+
+### Service
+Provides stable access to workloads.
 
 ---
 
@@ -59,8 +109,8 @@ Pods running on worker nodes
 
 Install:
 
-- Azure CLI
-- kubectl
+- Azure CLI  
+- kubectl  
 
 Login:
 
@@ -76,7 +126,9 @@ kubectl version --client
 
 ---
 
-# Step 1 Create Resource Group
+## Quick Start
+
+### Create Resource Group
 
 ```bash
 az group create \
@@ -86,7 +138,7 @@ az group create \
 
 ---
 
-# Step 2 Create AKS Cluster
+## Create AKS Cluster
 
 ```bash
 az aks create \
@@ -99,7 +151,7 @@ az aks create \
 
 ---
 
-# Step 3 Connect To Cluster
+## Connect To Cluster
 
 ```bash
 az aks get-credentials \
@@ -107,24 +159,30 @@ az aks get-credentials \
 --name day1akscluster
 ```
 
-Verify:
+Verify nodes:
 
 ```bash
 kubectl get nodes
 ```
 
 Expected:
-2 nodes in Ready state.
+
+```bash
+Ready
+Ready
+```
 
 ---
 
-# Step 4 Deploy First Application
+## Deploy First Application
+
+Create deployment:
 
 ```bash
 kubectl create deployment nginx-demo --image=nginx
 ```
 
-Scale:
+Scale to 3 replicas:
 
 ```bash
 kubectl scale deployment nginx-demo --replicas=3
@@ -138,7 +196,30 @@ kubectl get pods
 
 ---
 
-# Step 5 Expose Application
+## Deploy Using YAML
+
+Apply deployment manifest:
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+Apply service:
+
+```bash
+kubectl apply -f service.yaml
+```
+
+Verify:
+
+```bash
+kubectl get pods
+kubectl get svc
+```
+
+---
+
+## Expose Application
 
 ```bash
 kubectl expose deployment nginx-demo \
@@ -146,17 +227,19 @@ kubectl expose deployment nginx-demo \
 --type=LoadBalancer
 ```
 
-Check service:
+Check external IP:
 
 ```bash
 kubectl get svc
 ```
 
-Browse external IP once assigned.
+Once IP appears, browse it.
+
+You should see nginx running.
 
 ---
 
-# Step 6 Test Self-Healing
+## Test Self-Healing
 
 Delete a pod:
 
@@ -164,33 +247,61 @@ Delete a pod:
 kubectl delete pod <pod-name>
 ```
 
-Observe:
+Watch Kubernetes recreate it:
 
 ```bash
 kubectl get pods
 ```
 
-Kubernetes recreates it automatically.
+Observation:
+
+Kubernetes automatically restores desired state.
 
 ---
 
-# Key Concepts Learned
+## Key Concepts Learned
 
-## Pod
-Smallest deployable unit.
+### Pod
+Runs the containerized application.
 
-## Deployment
-Manages replicas and self-healing.
+### Deployment
+Ensures desired number of replicas.
 
-## Service
-Stable access endpoint for applications.
+### Service
+Exposes application traffic.
 
-## Node
-Virtual machine running workloads.
+### Node
+Virtual machine hosting workloads.
+
+### Self-Healing
+Failed pods are recreated automatically.
 
 ---
 
-# Cleanup
+## Day 1 Takeaways
+
+- Learned AKS control plane vs worker nodes
+- Created a first AKS cluster
+- Deployed first Kubernetes workload
+- Used Services to expose applications
+- Observed Kubernetes self-healing behavior
+
+Big takeaway:
+
+Kubernetes is not just container hosting — it is an orchestration platform.
+
+---
+
+## Questions for Further Learning
+
+- How does Kubernetes scheduling work?
+- What is the difference between Services and Ingress?
+- How does autoscaling work in AKS?
+- How are workloads secured in production AKS?
+
+---
+
+## Cleanup
 
 Delete resources when done:
 
@@ -200,10 +311,23 @@ az group delete \
 --yes --no-wait
 ```
 
-Important to avoid charges.
+Important:
+Delete the resource group to avoid charges.
 
 ---
 
-# Next
-Day 2:
-Pods, Deployments and Services in depth
+## Resources
+
+Useful references:
+
+AKS Documentation  
+Kubernetes Basics  
+Azure Architecture Center
+
+(Links to be added)
+
+---
+
+## Next
+
+Day 2 — Pods, Deployments and Services in Depth
