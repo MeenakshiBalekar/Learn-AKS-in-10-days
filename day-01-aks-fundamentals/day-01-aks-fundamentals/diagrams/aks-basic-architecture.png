@@ -1,0 +1,12 @@
+                 Users
+                   |
+             External IP
+                   |
+          Kubernetes Service
+                   |
+               AKS Cluster
+        -------------------------
+        |                       |
+      Node 1                  Node 2
+        |                       |
+      Pod A                   Pod B
