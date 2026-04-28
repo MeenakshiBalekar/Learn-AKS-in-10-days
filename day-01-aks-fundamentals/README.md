@@ -1,4 +1,15 @@
 # Day 1 — AKS Cluster Fundamentals
+## Repository Structure
+
+```text
+day-01-aks-fundamentals/
+├── README.md
+├── deployment.yaml
+├── service.yaml
+├── notes.md
+└── diagrams/
+    └── aks-basic-architecture.png
+```
 
 ## Objective
 Understand core AKS building blocks and deploy a first workload.
