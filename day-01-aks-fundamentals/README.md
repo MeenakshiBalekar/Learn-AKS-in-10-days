@@ -14,17 +14,6 @@ By the end of Day 1:
 
 ---
 
-## Repository Structure
-
-```text
-day-01-aks-fundamentals/
-├── README.md
-├── deployment.yaml
-├── service.yaml
-├── notes.md
-└── diagrams/
-```
-
 ---
 
 ## What is AKS?
@@ -63,8 +52,6 @@ You manage:
         |                       |
       Pod A                   Pod B
 ```
-
-(Architecture diagram to be added in diagrams folder)
 
 ---
 
