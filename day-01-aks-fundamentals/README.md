@@ -14,8 +14,6 @@ By the end of Day 1:
 
 ---
 
----
-
 ## What is AKS?
 
 Azure Kubernetes Service (AKS) is a managed Kubernetes service on Azure.
