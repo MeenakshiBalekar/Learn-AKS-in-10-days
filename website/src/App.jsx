@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import Scanner from './components/Scanner'
 import TrustLogos from './components/TrustLogos'
 import Features from './components/Features'
 import HowItWorks from './components/HowItWorks'
@@ -17,6 +18,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
+        <Scanner />
         <TrustLogos />
         <Features />
         <HowItWorks />
